@@ -43,19 +43,31 @@ const onSpaceTravelRequested = async ({ shuttleDb, cosmonautId }) => {
   // async and await so shuttleDB should be a promise
   const shuttles = await shuttleDb.read();
 
+  // console.log output: the following value should be array
+  // {
+  //   discovery: '{"date":10,"name":"discovery","crew":[],"remainingCapacity":1}',
+  //   'sputnik-2': '{"date":3,"name":"sputnik-2","crew":[],"remainingCapacity":3}',
+  //   'tom-hanks': '{"date":-5,"name":"tom-hanks","crew":[],"remainingCapacity":0}'
+  // }
+  // console.log(shuttles);
+
+  const separateObject = (obj) => {
+    const res = [];
+    const keys = Object.keys(obj);
+    console.log("keys values: ", keys);
+    keys.forEach((key) => {
+      res.push(JSON.parse(obj[key]));
+    });
+    return res;
+  };
+  const shuttlesParsed = separateObject(shuttles);
+
   // assume the return value should be an array due to find()
-  const { discovery } = shuttles;
-  const parsedDiscovery = JSON.parse(discovery);
-  console.log("shuttle after read() here: ", parsedDiscovery);
-
-  const checkDate = parsedDiscovery.date >= 0;
-  const checkCapacity = parsedDiscovery.capacity > 0;
-  console.log(checkDate, " vs ", checkCapacity);
-
-  // const availableShuttle = shuttles.find(
-  //   ({ date, capacity }) => date >= 0 && capacity > 0
-  // );
-  const availableShuttle = checkDate && checkCapacity;
+  const availableShuttle = shuttlesParsed.find(
+    ({ date, remainingCapacity }) => {
+      return date >= 0 && remainingCapacity > 0;
+    }
+  );
 
   if (!availableShuttle) {
     throw new Error(
