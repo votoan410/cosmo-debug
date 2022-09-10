@@ -34,6 +34,8 @@ module.exports = {
     const methodsByName = {
       getDbFilename: () => dbFilename,
       open: promisify(db.open.bind(db)),
+      // read method, heck is promisfy? 
+      // promisfy(cb()) function that return a promise 
       read: promisify(db.read.bind(db)),
       write: promisify(db.write.bind(db)),
       delete: promisify(db.delete.bind(db))
