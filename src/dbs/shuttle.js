@@ -33,9 +33,17 @@ module.exports = {
       getDbFilename: () => dbFilename,
       open: promisify(db.open.bind(db)),
       // read method, heck is promisfy?
-      // promisfy(cb())  to convert
+      // promisfy(cb(cb))  to convert
       //  callback based methods to
-      //  promise based methods (Ex: then(), resolve(), reject())
+      //  promise based methods (gain access to use then(), resolve(), reject())
+     
+      /**
+      * 
+      * Error-first callback in Node. js is a 
+      * function that returns an error object 
+      * whenever any successful data 
+      * is returned by the function. 
+      */
       /* 
         bind() create a new function bounded to an object that
         contains the function that we want to use. 

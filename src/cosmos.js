@@ -16,7 +16,7 @@ const listen = async () => {
   //     write: [Function: bound write],
   //     delete: [Function: bound delete]
   //   }
-  console.log("shuttleDb after await: ", shuttleDb);
+  // console.log("shuttleDb after await: ", shuttleDb);
 
   const spaceTravelEmitter = createSpaceTravelEmitter();
   let totalCrewCount = 0;
@@ -43,7 +43,7 @@ const onSpaceTravelRequested = async ({ shuttleDb, cosmonautId }) => {
   // async and await so shuttleDB should be a promise
   const shuttles = await shuttleDb.read();
 
-  // console.log output: the following value should be array
+  // consoleg output: the following value should be array
   // {
   //   discovery: '{"date":10,"name":"discovery","crew":[],"remainingCapacity":1}',
   //   'sputnik-2': '{"date":3,"name":"sputnik-2","crew":[],"remainingCapacity":3}',
@@ -51,16 +51,31 @@ const onSpaceTravelRequested = async ({ shuttleDb, cosmonautId }) => {
   // }
   // console.log(shuttles);
 
-  const separateObject = (obj) => {
+  const convertToArr = (obj) => {
+    console.log("object inputted: ", obj);
     const res = [];
     const keys = Object.keys(obj);
-    console.log("keys values: ", keys);
+    console.log("keys: ", keys);
     keys.forEach((key) => {
-      res.push(JSON.parse(obj[key]));
+      console.log(
+        "curr key being added to arr: ",
+        obj[key],
+        " type: ",
+        typeof obj[key]
+      );
+      // JSON.parse(JSON.stringify => converting an object to a string format)
+      res.push(JSON.parse(JSON.stringify(obj[key])));
     });
     return res;
   };
-  const shuttlesParsed = separateObject(shuttles);
+  const shuttlesParsed = convertToArr(shuttles);
+
+  // console.log(
+  //   "parsed output: ",
+  //   shuttlesParsed,
+  //   " and type: ",
+  //   typeof shuttlesParsed
+  // );
 
   // assume the return value should be an array due to find()
   const availableShuttle = shuttlesParsed.find(
